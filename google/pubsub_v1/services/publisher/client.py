@@ -24,14 +24,14 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.api_core import exceptions                            # type: ignore
+from google.api_core import gapic_v1                              # type: ignore
+from google.api_core import retry as retries                      # type: ignore
+from google.auth import credentials                               # type: ignore
+from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport.grpc import SslCredentials             # type: ignore
+from google.auth.exceptions import MutualTLSChannelError          # type: ignore
+from google.oauth2 import service_account                         # type: ignore
 
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -52,12 +52,13 @@ class PublisherClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-
     _transport_registry = OrderedDict()  # type: Dict[str, Type[PublisherTransport]]
-    _transport_registry["grpc"] = PublisherGrpcTransport
-    _transport_registry["grpc_asyncio"] = PublisherGrpcAsyncIOTransport
+    _transport_registry['grpc'] = PublisherGrpcTransport
+    _transport_registry['grpc_asyncio'] = PublisherGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[PublisherTransport]:
+    def get_transport_class(cls,
+            label: str = None,
+        ) -> Type[PublisherTransport]:
         """Return an appropriate transport class.
 
 
@@ -113,16 +114,15 @@ class PublisherClient(metaclass=PublisherClientMeta):
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
-    _DEFAULT_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/pubsub",
-    )
+            # this service
+            _DEFAULT_SCOPES = (
+                'https://www.googleapis.com/auth/cloud-platform'
+                'https://www.googleapis.com/auth/pubsub'
+            )
+            SERVICE_ADDRESS = "pubsub.googleapis.com:443"
+            """The default address of the service."""
 
-    SERVICE_ADDRESS = "pubsub.googleapis.com:443"
-    """The default address of the service."""
-
-    DEFAULT_ENDPOINT = "pubsub.googleapis.com"
+            DEFAULT_ENDPOINT = 'pubsub.googleapis.com'
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
@@ -159,8 +159,9 @@ class PublisherClient(metaclass=PublisherClientMeta):
         Returns:
             PublisherClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -175,111 +176,99 @@ class PublisherClient(metaclass=PublisherClientMeta):
         return self._transport
 
     @staticmethod
-    def schema_path(project: str, schema: str,) -> str:
+    def schema_path(project: str,schema: str,) -> str:
         """Return a fully-qualified schema string."""
-        return "projects/{project}/schemas/{schema}".format(
-            project=project, schema=schema,
-        )
+        return "projects/{project}/schemas/{schema}".format(project=project, schema=schema, )
 
     @staticmethod
-    def parse_schema_path(path: str) -> Dict[str, str]:
+    def parse_schema_path(path: str) -> Dict[str,str]:
         """Parse a schema path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/schemas/(?P<schema>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def subscription_path(project: str, subscription: str,) -> str:
+    def subscription_path(project: str,subscription: str,) -> str:
         """Return a fully-qualified subscription string."""
-        return "projects/{project}/subscriptions/{subscription}".format(
-            project=project, subscription=subscription,
-        )
+        return "projects/{project}/subscriptions/{subscription}".format(project=project, subscription=subscription, )
 
     @staticmethod
-    def parse_subscription_path(path: str) -> Dict[str, str]:
+    def parse_subscription_path(path: str) -> Dict[str,str]:
         """Parse a subscription path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/subscriptions/(?P<subscription>.+?)$", path
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/subscriptions/(?P<subscription>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def topic_path(project: str, topic: str,) -> str:
+    def topic_path(project: str,topic: str,) -> str:
         """Return a fully-qualified topic string."""
-        return "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+        return "projects/{project}/topics/{topic}".format(project=project, topic=topic, )
 
     @staticmethod
-    def parse_topic_path(path: str) -> Dict[str, str]:
+    def parse_topic_path(path: str) -> Dict[str,str]:
         """Parse a topic path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(billing_account: str, ) -> str:
         """Return a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
+        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(folder: str, ) -> str:
         """Return a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(folder=folder, )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
+    def parse_common_folder_path(path: str) -> Dict[str,str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(organization: str, ) -> str:
         """Return a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(organization=organization, )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
+    def parse_common_organization_path(path: str) -> Dict[str,str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(project: str, ) -> str:
         """Return a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(project=project, )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
+    def parse_common_project_path(path: str) -> Dict[str,str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(project: str, location: str, ) -> str:
         """Return a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
-        )
+        return "projects/{project}/locations/{location}".format(project=project, location=location, )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
+    def parse_common_location_path(path: str) -> Dict[str,str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, PublisherTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[credentials.Credentials] = None,
+            transport: Union[str, PublisherTransport, None] = None,
+            client_options: Optional[client_options_lib.ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the publisher client.
 
 
@@ -324,9 +313,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
-        )
+        use_client_cert = bool(util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")))
 
         client_cert_source_func = None
         is_mtls = False
@@ -336,9 +323,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                client_cert_source_func = mtls.default_client_cert_source() if is_mtls else None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -350,9 +335,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
                     "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
@@ -364,10 +347,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         if isinstance(transport, PublisherTransport):
             # transport is a PublisherTransport instance.
             if credentials or client_options.credentials_file:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError('When providing a transport instance, '
+                                 'provide its credentials directly.')
             if client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -377,14 +358,15 @@ class PublisherClient(metaclass=PublisherClientMeta):
         else:
             Transport = type(self).get_transport_class(transport)
 
-            emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
-            if emulator_host:
-                if issubclass(Transport, type(self)._transport_registry["grpc"]):
-                    channel = grpc.insecure_channel(target=emulator_host)
-                else:
-                    channel = grpc.aio.insecure_channel(target=emulator_host)
-                Transport = functools.partial(Transport, channel=channel)
+                    emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
+                    if emulator_host:
+                        if issubclass(Transport, type(self)._transport_registry["grpc"]):
+                            channel = grpc.insecure_channel(target=emulator_host)
+                        else:
+                            channel = grpc.aio.insecure_channel(target=emulator_host)
+                        Transport = functools.partial(Transport, channel=channel)
 
+            
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
@@ -395,15 +377,14 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 client_info=client_info,
             )
 
-    def create_topic(
-        self,
-        request: pubsub.Topic = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.Topic:
+    def create_topic(self,
+            request: pubsub.Topic = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pubsub.Topic:
         r"""Creates the given topic with the given name. See the [resource
         name rules]
         (https://cloud.google.com/pubsub/docs/admin#resource_names).
@@ -441,10 +422,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.Topic.
@@ -466,23 +445,29 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def update_topic(
-        self,
-        request: pubsub.UpdateTopicRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.Topic:
+    def update_topic(self,
+            request: pubsub.UpdateTopicRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pubsub.Topic:
         r"""Updates an existing topic. Note that certain
         properties of a topic are not modifiable.
 
@@ -517,27 +502,31 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("topic.name", request.topic.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('topic.name', request.topic.name),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def publish(
-        self,
-        request: pubsub.PublishRequest = None,
-        *,
-        topic: str = None,
-        messages: Sequence[pubsub.PubsubMessage] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.PublishResponse:
+    def publish(self,
+            request: pubsub.PublishRequest = None,
+            *,
+            topic: str = None,
+            messages: Sequence[pubsub.PubsubMessage] = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pubsub.PublishResponse:
         r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
         the topic does not exist.
 
@@ -574,10 +563,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic, messages])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.PublishRequest.
@@ -601,24 +588,30 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('topic', request.topic),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def get_topic(
-        self,
-        request: pubsub.GetTopicRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.Topic:
+    def get_topic(self,
+            request: pubsub.GetTopicRequest = None,
+            *,
+            topic: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pubsub.Topic:
         r"""Gets the configuration of a topic.
 
 
@@ -648,10 +641,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.GetTopicRequest.
@@ -673,24 +664,30 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('topic', request.topic),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def list_topics(
-        self,
-        request: pubsub.ListTopicsRequest = None,
-        *,
-        project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListTopicsPager:
+    def list_topics(self,
+            request: pubsub.ListTopicsRequest = None,
+            *,
+            project: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListTopicsPager:
         r"""Lists matching topics.
 
 
@@ -724,10 +721,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.ListTopicsRequest.
@@ -749,30 +744,39 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('project', request.project),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTopicsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def list_topic_subscriptions(
-        self,
-        request: pubsub.ListTopicSubscriptionsRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListTopicSubscriptionsPager:
+    def list_topic_subscriptions(self,
+            request: pubsub.ListTopicSubscriptionsRequest = None,
+            *,
+            topic: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListTopicSubscriptionsPager:
         r"""Lists the names of the attached subscriptions on this
         topic.
 
@@ -809,10 +813,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.ListTopicSubscriptionsRequest.
@@ -834,30 +836,39 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('topic', request.topic),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTopicSubscriptionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def list_topic_snapshots(
-        self,
-        request: pubsub.ListTopicSnapshotsRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListTopicSnapshotsPager:
+    def list_topic_snapshots(self,
+            request: pubsub.ListTopicSnapshotsRequest = None,
+            *,
+            topic: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListTopicSnapshotsPager:
         r"""Lists the names of the snapshots on this topic. Snapshots are
         used in
         `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
@@ -898,10 +909,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.ListTopicSnapshotsRequest.
@@ -923,30 +932,39 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('topic', request.topic),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTopicSnapshotsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def delete_topic(
-        self,
-        request: pubsub.DeleteTopicRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    def delete_topic(self,
+            request: pubsub.DeleteTopicRequest = None,
+            *,
+            topic: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Deletes the topic with the given name. Returns ``NOT_FOUND`` if
         the topic does not exist. After a topic is deleted, a new topic
         may be created with the same name; this is an entirely new topic
@@ -978,10 +996,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a pubsub.DeleteTopicRequest.
@@ -1003,22 +1019,26 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('topic', request.topic),
+            )),
         )
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    def detach_subscription(
-        self,
-        request: pubsub.DetachSubscriptionRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.DetachSubscriptionResponse:
+    def detach_subscription(self,
+            request: pubsub.DetachSubscriptionRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pubsub.DetachSubscriptionResponse:
         r"""Detaches a subscription from this topic. All messages retained
         in the subscription are dropped. Subsequent ``Pull`` and
         ``StreamingPull`` requests will return FAILED_PRECONDITION. If
@@ -1059,13 +1079,18 @@ class PublisherClient(metaclass=PublisherClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("subscription", request.subscription),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('subscription', request.subscription),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1344,14 +1369,17 @@ class PublisherClient(metaclass=PublisherClientMeta):
         return response
 
 
+
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         client_library_version=pkg_resources.get_distribution(
-            "google-cloud-pubsub",
+            'google-cloud-pubsub',
         ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("PublisherClient",)
+__all__ = (
+    'PublisherClient',
+)
