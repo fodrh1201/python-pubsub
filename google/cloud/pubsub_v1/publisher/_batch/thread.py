@@ -209,7 +209,7 @@ class Batch(base.Batch):
         """Start a new thread to actually handle the commit."""
 
         commit_thread = threading.Thread(
-            name="Thread-CommitBatchPublisher", target=self._commit
+            name="Thread-CommitBatchPublisher",target=self._commit, daemon=True
         )
         commit_thread.start()
 

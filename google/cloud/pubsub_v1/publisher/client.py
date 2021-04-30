@@ -376,7 +376,9 @@ class Client(object):
     def _start_commit_thread(self):
         """Start a new thread to actually wait and commit the sequencers."""
         self._commit_thread = threading.Thread(
-            name="Thread-PubSubBatchCommitter", target=self._wait_and_commit_sequencers
+            name="Thread-PubSubBatchCommitter",
+            target=self._wait_and_commit_sequencers,
+            daemon=True
         )
         self._commit_thread.start()
 
